@@ -1,4 +1,3 @@
-//your JS code here. If required.
 const buttons = document.querySelectorAll(".btn");
 
 let currentAudio = null;
@@ -7,7 +6,7 @@ buttons.forEach(button => {
     button.addEventListener("click", () => {
         const sound = button.innerText;
 
-        // Stop button logic
+        // Stop button
         if (button.classList.contains("stop")) {
             if (currentAudio) {
                 currentAudio.pause();
@@ -16,15 +15,19 @@ buttons.forEach(button => {
             return;
         }
 
-        // Stop previous audio if playing
+        // Remove previous audio
         if (currentAudio) {
             currentAudio.pause();
-            currentAudio.currentTime = 0;
+            currentAudio.remove();
         }
 
-        // Play new audio
-        const audio = new Audio(`sounds/${sound}.mp3`);
+        // Create audio element (THIS IS THE FIX)
+        const audio = document.createElement("audio");
+        audio.src = `sounds/${sound}.mp3`;
+        audio.autoplay = true;
+
+        document.body.appendChild(audio); // important
+
         currentAudio = audio;
-        audio.play();
     });
 });
